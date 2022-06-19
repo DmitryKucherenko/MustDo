@@ -1,0 +1,21 @@
+buildscript {
+    ext.room_version = '2.4.2'
+    ext.coroutines_version = '1.5.2'
+    ext.dagger_version = '2.35.1'
+    ext.nav_version = "2.4.2"
+
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+    }
+}
+
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
