@@ -1,6 +1,7 @@
 package com.life.software.mustdo.di
 
 import android.app.Application
+import com.life.software.mustdo.presentation.AddTaskFragment
 import com.life.software.mustdo.presentation.TasksListFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -14,7 +15,8 @@ import dagger.Component
 )
 interface ApplicationComponent {
 
-     fun inject(tasksListFragment: TasksListFragment)
+    fun inject(addTaskFragment: AddTaskFragment)
+    fun inject(tasksListFragment: TasksListFragment)
 
     @Component.Factory
     interface Factory{

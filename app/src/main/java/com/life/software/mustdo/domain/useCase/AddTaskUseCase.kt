@@ -1,10 +1,11 @@
 package com.life.software.mustdo.domain.useCase
 
 import com.life.software.mustdo.domain.TasksRepository
+import com.life.software.mustdo.domain.model.Task
 import javax.inject.Inject
 
-class GetTasksUseCase @Inject constructor(
+class AddTaskUseCase @Inject constructor(
     private val repository: TasksRepository
 ) {
-    operator fun invoke() = repository.getTasks()
+    suspend operator fun invoke(task: Task) = repository.addTask(task)
 }

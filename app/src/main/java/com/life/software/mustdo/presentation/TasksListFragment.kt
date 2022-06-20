@@ -51,6 +51,7 @@ class TasksListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        setupListener()
         viewModel.getTaskList().observe(
             viewLifecycleOwner
         ) { taskList ->
@@ -66,5 +67,12 @@ class TasksListFragment : Fragment() {
         taskRecyclerView?.layoutManager = LinearLayoutManager(context)
         adapter = TaskAdapter()
         taskRecyclerView?.adapter = adapter
+    }
+
+    private fun setupListener(){
+        addTaskButton?.setOnClickListener {
+            val task = Task(0,"TETST","20.06.2022")
+            viewModel.addTask(task)
+        }
     }
 }

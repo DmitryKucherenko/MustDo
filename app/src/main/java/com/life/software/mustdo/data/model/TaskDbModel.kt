@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity (tableName = "taskdbmodel")
 class TaskDbModel (
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
     val id: Int,
     val taskInfo:String,
     val date: String
