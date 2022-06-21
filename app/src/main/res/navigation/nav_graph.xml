@@ -9,5 +9,13 @@
         android:id="@+id/tasksListFragment"
         android:name="com.life.software.mustdo.presentation.TasksListFragment"
         android:label="tasks_list_fragment"
-        tools:layout="@layout/tasks_list_fragment" />
+        tools:layout="@layout/tasks_list_fragment" >
+        <action
+            android:id="@+id/action_tasksListFragment_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="com.life.software.mustdo.presentation.AddTaskFragment"
+        android:label="AddTaskFragment" />
 </navigation>

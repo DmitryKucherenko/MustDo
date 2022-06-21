@@ -7,17 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.life.software.mustdo.databinding.TasksListFragmentBinding
-import com.life.software.mustdo.domain.model.Task
 import com.life.software.mustdo.presentation.adapter.TaskAdapter
 import javax.inject.Inject
 
 class TasksListFragment : Fragment() {
     private var _binding: TasksListFragmentBinding? = null
     private val binding get() = requireNotNull(_binding)
+    private var navController: NavController? = null
 
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[TasksListViewModel::class.java]
@@ -62,17 +64,21 @@ class TasksListFragment : Fragment() {
     private fun initView() {
         with(binding) {
             taskRecyclerView = recyclerView
-            addTaskButton = floatingActionButton2
+            addTaskButton = floatingAddButton
         }
         taskRecyclerView?.layoutManager = LinearLayoutManager(context)
         adapter = TaskAdapter()
         taskRecyclerView?.adapter = adapter
+        navController = findNavController()
     }
 
     private fun setupListener(){
         addTaskButton?.setOnClickListener {
-            val task = Task(0,"TETST","20.06.2022")
-            viewModel.addTask(task)
+//            val task = Task(0,"TETST","20.06.2022")
+//            viewModel.addTask(task)
+            navController?.navigate(
+            TasksListFragmentDirections.actionTasksListFragmentToAddTaskFragment()
+            )
         }
     }
 }
