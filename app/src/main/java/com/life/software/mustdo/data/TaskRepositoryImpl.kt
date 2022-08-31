@@ -5,13 +5,15 @@ import androidx.lifecycle.Transformations
 import com.life.software.mustdo.data.mapper.TaskMapper
 import com.life.software.mustdo.domain.TasksRepository
 import com.life.software.mustdo.domain.model.Task
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TaskRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao
 ) : TasksRepository {
-    override fun getTasks(): LiveData<List<Task>> {
-        return Transformations.map(taskDao.getTasks()) { taskDb ->
+    override fun getTasks(): Flow<List<Task>> {
+        return (taskDao.getTasks()).map { taskDb ->
             taskDb.map {
                 TaskMapper.taskDbModelToTask(it)
             }
@@ -28,6 +30,10 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun deleteTask(id: Int) {
         taskDao.deleteTask(id)
+    }
+
+    override suspend fun deleteTasks(listId: List<Int>) {
+        taskDao.deleteTasks(listId)
     }
 
 }

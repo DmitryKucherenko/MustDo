@@ -9,8 +9,10 @@ class TaskHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private val taskText = binding.taskText
+    val checkImage = binding.checkImageView
 
-    fun bind(task: Task){
-      taskText.text = task.taskInfo
-  }
+    fun bind(task: Task) {
+        taskText.text = task.taskInfo
+    }
+
 }

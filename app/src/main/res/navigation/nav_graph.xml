@@ -17,5 +17,9 @@
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="com.life.software.mustdo.presentation.AddTaskFragment"
-        android:label="AddTaskFragment" />
+        android:label="AddTaskFragment" >
+        <argument
+            android:name="taskId"
+            app:argType="string" />
+    </fragment>
 </navigation>

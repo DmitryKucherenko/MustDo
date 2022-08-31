@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.life.software.mustdo.domain.model.Task
 import com.life.software.mustdo.domain.useCase.AddTaskUseCase
+import com.life.software.mustdo.domain.useCase.DeleteTaskUseCase
 import com.life.software.mustdo.domain.useCase.GetTaskUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
