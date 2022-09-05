@@ -7,13 +7,13 @@
     <item
         android:id="@+id/done"
         android:icon="@drawable/ic_done_outline"
-        android:title="@string/delete"
+        android:title="done"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/edite"
         android:icon="@drawable/edit"
-        android:title="@string/delete"
+        android:title="edite"
         app:showAsAction="always" />
 
     <item

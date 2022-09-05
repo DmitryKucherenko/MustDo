@@ -39,6 +39,7 @@ class TaskAdapter(
             true
         }
 
+
         holder.itemView.setOnClickListener{
             if(_itemSelectedList.contains(task.id)){
                 holder.checkImage.visibility = View.GONE
@@ -47,7 +48,7 @@ class TaskAdapter(
                 if(_itemSelectedList.isEmpty()){
                     showMenuDelete(false)
                     isEnable = false
-                }
+                }else{showMenuDelete(true)}
             }else if(isEnable){
                 selectItem(holder,task)
             }

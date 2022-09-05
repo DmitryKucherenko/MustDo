@@ -20,6 +20,6 @@
         android:label="AddTaskFragment" >
         <argument
             android:name="taskId"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
 </navigation>

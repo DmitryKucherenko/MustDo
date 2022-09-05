@@ -1,26 +1,24 @@
 package com.life.software.mustdo.presentation
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.life.software.mustdo.domain.model.Task
-import com.life.software.mustdo.domain.useCase.AddTaskUseCase
-import com.life.software.mustdo.domain.useCase.DeleteTaskUseCase
-import com.life.software.mustdo.domain.useCase.DeleteTasksUseCase
-import com.life.software.mustdo.domain.useCase.GetTaskListUseCase
+import com.life.software.mustdo.domain.useCase.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TasksListViewModel @Inject constructor(
-    private val getTaskUseCase: GetTaskListUseCase,
+    private val getTasksUseCase: GetTaskListUseCase,
     private val addTaskUseCase: AddTaskUseCase,
     private val deleteTaskUseCase:DeleteTaskUseCase,
     private val deleteTasksUseCase: DeleteTasksUseCase,
+    private val getTaskUseCase: GetTaskUseCase
 
     ) : ViewModel() {
     fun getTaskList(): Flow<List<Task>> {
-        return getTaskUseCase()
+        return getTasksUseCase()
     }
 
     fun addTask(task:Task){
@@ -39,4 +37,14 @@ class TasksListViewModel @Inject constructor(
             deleteTasksUseCase(IdList)
         }
     }
+
+
+    fun doneTask(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val task = getTaskUseCase(id)
+            val doneTask =  task.copy(done=!task.done)
+            addTask(doneTask)
+        }
+    }
+
 }

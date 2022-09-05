@@ -13,11 +13,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.life.software.mustdo.databinding.AddTaskFragmentBinding
 import com.life.software.mustdo.domain.model.Task
+import com.life.software.mustdo.utils.Constants.UNDEFINED_ID
 import com.life.software.mustdo.utils.getCurrentDateTime
 import com.life.software.mustdo.utils.showKeyboard
 import javax.inject.Inject
 
-class AddTaskFragment:Fragment() {
+class AddTaskFragment : Fragment() {
     private var _binding: AddTaskFragmentBinding? = null
     private val binding get() = requireNotNull(_binding)
 
@@ -38,6 +39,7 @@ class AddTaskFragment:Fragment() {
         ViewModelProvider(this, viewModelFactory)[AddTaskViewModel::class.java]
     }
 
+
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
@@ -49,9 +51,7 @@ class AddTaskFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = AddTaskFragmentBinding.inflate(inflater, container, false)
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,18 +61,46 @@ class AddTaskFragment:Fragment() {
         viewModel.finish.observe(viewLifecycleOwner) {
             if (it) navController?.popBackStack()
         }
-        with(binding){
-            button.setOnClickListener{
-                val task = Task(0,editTextTextMultiLine.text.toString(),getCurrentDateTime().toString())
-                viewModel.saveTask(task)
-            }
 
-            editTextTextMultiLine.showKeyboard()
+            binding.editTextTextMultiLine.showKeyboard()
 
+
+        if (taskId == -1) {
+            launchAddMode()
+        } else {
+            launchEditMode()
         }
 
-
     }
+
+
+    private fun launchAddMode() {
+        binding.saveButton.setOnClickListener {
+            val task = Task(
+                0,
+                binding.editTextTextMultiLine.text.toString(),
+                getCurrentDateTime().toString()
+            )
+            viewModel.saveTask(task)
+        }
+    }
+
+    private fun launchEditMode() {
+        viewModel.getTask(taskId)
+
+        viewModel.task.observe(viewLifecycleOwner, {
+            binding.editTextTextMultiLine.setText(it.taskInfo)
+        })
+        binding.saveButton.setOnClickListener {
+            val taskEdit = viewModel.task.value?.copy(
+                taskInfo = binding.editTextTextMultiLine.text.toString(),
+            )
+            taskEdit?.let {
+                viewModel.saveTask(taskEdit)
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

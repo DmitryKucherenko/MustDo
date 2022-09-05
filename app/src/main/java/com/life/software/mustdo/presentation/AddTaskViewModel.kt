@@ -8,6 +8,7 @@ import com.life.software.mustdo.domain.model.Task
 import com.life.software.mustdo.domain.useCase.AddTaskUseCase
 import com.life.software.mustdo.domain.useCase.DeleteTaskUseCase
 import com.life.software.mustdo.domain.useCase.GetTaskUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,14 +25,14 @@ class AddTaskViewModel @Inject constructor(
         get() = _task
 
     fun saveTask(task: Task) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             addTaskUseCase(task)
             _finish.postValue(true)
         }
     }
 
     fun getTask(id: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _task.postValue(getTaskUseCase(id))
         }
     }

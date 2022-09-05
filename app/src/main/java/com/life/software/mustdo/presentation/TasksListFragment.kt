@@ -37,7 +37,7 @@ class TasksListFragment : Fragment() {
 
 
     private var taskRecyclerView: RecyclerView? = null
-    private var adapter: TaskAdapter? = null
+    private lateinit var adapter: TaskAdapter
     private var addTaskButton: FloatingActionButton? = null
 
     @Inject
@@ -75,7 +75,7 @@ class TasksListFragment : Fragment() {
                 viewModel.getTaskList()
                     .catch { exceptions -> println(exceptions) }
                     .collectLatest {  taskList ->
-             adapter?.submitList(taskList)
+             adapter.submitList(taskList)
 
                 }
             }
@@ -93,6 +93,7 @@ class TasksListFragment : Fragment() {
     private fun showDeleteMenu(show: Boolean) {
 
         for (itemIndex in 0 until mainMenu.size()) {
+            if(itemIndex in 0..1 && adapter.itemSelectedList.size > 1)mainMenu.getItem(itemIndex).isVisible = false else
             mainMenu.getItem(itemIndex).isVisible = show
         }
     }
@@ -100,7 +101,7 @@ class TasksListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.mDelete -> {
-                adapter?.let {
+                adapter.let {
                     getDialog(
                         requireContext(),
                         "Do you want delete this items?",
@@ -114,6 +115,13 @@ class TasksListFragment : Fragment() {
 
                 }
             }
+            R.id.edite ->{
+                navController?.navigate(TasksListFragmentDirections.actionTasksListFragmentToAddTaskFragment(adapter.itemSelectedList.get(0)?:-1))
+            }
+            R.id.done ->{
+                    viewModel.doneTask(adapter.itemSelectedList[0])
+            }
+
         }
         return super.onOptionsItemSelected(item)
     }

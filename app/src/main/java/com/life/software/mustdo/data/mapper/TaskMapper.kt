@@ -9,17 +9,19 @@ class TaskMapper {
             Task(
                 taskDbModel.id,
                 taskDbModel.taskInfo,
-                taskDbModel.date
+                taskDbModel.date,
+                taskDbModel.done
             )
 
         fun taskDbListToTaskList(taskDbList: List<TaskDbModel>) =
             taskDbList.map { taskDbModelToTask(it) }
 
-        fun taskToTaskDbModel(task:Task):TaskDbModel{
+        fun taskToTaskDbModel(task: Task): TaskDbModel {
             return TaskDbModel(
                 task.id,
                 task.taskInfo,
-                task.date
+                task.date,
+                task.done
             )
 
         }

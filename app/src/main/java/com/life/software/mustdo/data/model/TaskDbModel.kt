@@ -9,5 +9,5 @@ class TaskDbModel(
     val id: Int,
     val taskInfo: String,
     val date: String,
-    val enabled: Boolean=false
+    val done: Boolean=false
 )

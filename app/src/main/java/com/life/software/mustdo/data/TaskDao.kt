@@ -24,5 +24,6 @@ interface TaskDao {
     suspend fun deleteTasks(taskList:List<Int>)
 
     @Query("SELECT * FROM taskdbmodel WHERE id=:taskId LIMIT 1")
-    suspend fun getTask(taskId: Int): Task
+     fun getTask(taskId: Int): Task
+
 }
