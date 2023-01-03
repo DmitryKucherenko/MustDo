@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MustDo</string>
-    <string name="add_task">add Task</string>
-    <string name="delete">Delete</string>
-    <string name="save">Save</string>
+    <string name="add_task">Добавить задачу</string>
+    <string name="delete">Удалить</string>
+    <string name="save">Сохранить</string>
+    <string name="dialog_item_text">Вы хотите удалить этот элемент(ы)?</string>
+    <string name="positive_dialog_button">Да</string>
+    <string name="negative_button_text">Нет</string>
 </resources>

@@ -93,7 +93,7 @@ class TasksListFragment : Fragment() {
     private fun showDeleteMenu(show: Boolean) {
 
         for (itemIndex in 0 until mainMenu.size()) {
-            if(itemIndex in 0..1 && adapter.itemSelectedList.size > 1)mainMenu.getItem(itemIndex).isVisible = false else
+            if(itemIndex == 1 && adapter.itemSelectedList.size > 1)mainMenu.getItem(itemIndex).isVisible = false else
             mainMenu.getItem(itemIndex).isVisible = show
         }
     }
@@ -104,9 +104,9 @@ class TasksListFragment : Fragment() {
                 adapter.let {
                     getDialog(
                         requireContext(),
-                        "Do you want delete this items?",
-                        "Yes",
-                        "No"
+                        getString(R.string.dialog_item_text),
+                        getString(R.string.positive_dialog_button),
+                        getString(R.string.negative_button_text)
                     ) {
                         viewModel.deleteTasks(it.itemSelectedList)
                         it.clearSelectedItem()
@@ -119,7 +119,7 @@ class TasksListFragment : Fragment() {
                 navController?.navigate(TasksListFragmentDirections.actionTasksListFragmentToAddTaskFragment(adapter.itemSelectedList.get(0)?:-1))
             }
             R.id.done ->{
-                    viewModel.doneTask(adapter.itemSelectedList[0])
+                    viewModel.doneTasks(adapter.itemSelectedList)
             }
 
         }

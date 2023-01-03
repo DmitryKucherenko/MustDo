@@ -14,7 +14,8 @@ class TasksListViewModel @Inject constructor(
     private val addTaskUseCase: AddTaskUseCase,
     private val deleteTaskUseCase:DeleteTaskUseCase,
     private val deleteTasksUseCase: DeleteTasksUseCase,
-    private val getTaskUseCase: GetTaskUseCase
+    private val getTaskUseCase: GetTaskUseCase,
+    private val updateTasks: UpdateTasks
 
     ) : ViewModel() {
     fun getTaskList(): Flow<List<Task>> {
@@ -44,6 +45,12 @@ class TasksListViewModel @Inject constructor(
             val task = getTaskUseCase(id)
             val doneTask =  task.copy(done=!task.done)
             addTask(doneTask)
+        }
+    }
+
+    fun doneTasks(IdList:List<Int>){
+        viewModelScope.launch(Dispatchers.IO) {
+            updateTasks(IdList)
         }
     }
 

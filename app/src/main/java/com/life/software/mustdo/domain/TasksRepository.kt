@@ -10,4 +10,5 @@ interface TasksRepository {
     suspend fun getTask(id:Int):Task
     suspend fun deleteTask(id:Int)
     suspend fun deleteTasks(listId:List<Int>)
+    suspend fun doneTasks(listId:List<Int>)
 }

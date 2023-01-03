@@ -36,4 +36,8 @@ class TaskRepositoryImpl @Inject constructor(
         taskDao.deleteTasks(listId)
     }
 
+    override suspend fun doneTasks(listId: List<Int>) {
+        taskDao.update(listId)
+    }
+
 }

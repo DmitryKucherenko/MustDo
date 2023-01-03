@@ -16,6 +16,10 @@ class TaskMapper {
         fun taskDbListToTaskList(taskDbList: List<TaskDbModel>) =
             taskDbList.map { taskDbModelToTask(it) }
 
+        fun taskListToDbList(taskList:List<Task>) = taskList.map {
+            taskToTaskDbModel(it)
+        }
+
         fun taskToTaskDbModel(task: Task): TaskDbModel {
             return TaskDbModel(
                 task.id,
