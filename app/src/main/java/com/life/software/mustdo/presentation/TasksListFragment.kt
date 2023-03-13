@@ -3,6 +3,7 @@ package com.life.software.mustdo.presentation
 import android.content.ClipData
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -22,6 +23,7 @@ import com.life.software.mustdo.utils.Constants.UNDEFINED_ID
 import com.life.software.mustdo.utils.getDialog
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -76,7 +78,7 @@ class TasksListFragment : Fragment() {
                     .catch { exceptions -> println(exceptions) }
                     .collectLatest {  taskList ->
              adapter.submitList(taskList)
-
+                        Log.d("TEST","LIST")
                 }
             }
         }

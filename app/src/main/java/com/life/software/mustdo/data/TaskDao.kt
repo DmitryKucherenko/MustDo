@@ -1,7 +1,9 @@
 package com.life.software.mustdo.data
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.life.software.mustdo.data.model.TaskDbModel
 import com.life.software.mustdo.domain.model.Task
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +26,11 @@ interface TaskDao {
      fun getTask(taskId: Int): Task
 
 
-     @Query("UPDATE taskdbmodel SET done = 1 WHERE id in (:taskList)")
-     suspend fun update(taskList:List<Int>)
+     @Query("SELECT * FROM taskdbmodel WHERE id in (:taskList)")
+     fun getSelectedTasks(taskList:List<Int>):Flow<List<TaskDbModel>>
+
+
+    @Query("UPDATE taskdbmodel SET done = (NOT done) WHERE id in(:taskIdList)")
+    fun tasksDone(taskIdList:List<Int>)
+
 }

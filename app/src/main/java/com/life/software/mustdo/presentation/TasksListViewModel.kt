@@ -1,11 +1,12 @@
 package com.life.software.mustdo.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.life.software.mustdo.domain.model.Task
 import com.life.software.mustdo.domain.useCase.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,9 +16,12 @@ class TasksListViewModel @Inject constructor(
     private val deleteTaskUseCase:DeleteTaskUseCase,
     private val deleteTasksUseCase: DeleteTasksUseCase,
     private val getTaskUseCase: GetTaskUseCase,
-    private val updateTasks: UpdateTasks
+    private val getSelectedTasksUseCase: GetSelectedTasksUseCase,
+    private val doneTasksUseCase: DoneTasksUseCase
+
 
     ) : ViewModel() {
+
     fun getTaskList(): Flow<List<Task>> {
         return getTasksUseCase()
     }
@@ -48,9 +52,13 @@ class TasksListViewModel @Inject constructor(
         }
     }
 
-    fun doneTasks(IdList:List<Int>){
+    fun doneTasks(tasksIdList:List<Int>){
         viewModelScope.launch(Dispatchers.IO) {
-            updateTasks(IdList)
+
+
+                doneTasksUseCase(tasksIdList)
+
+
         }
     }
 

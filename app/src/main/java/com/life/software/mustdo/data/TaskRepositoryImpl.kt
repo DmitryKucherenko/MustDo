@@ -1,7 +1,5 @@
 package com.life.software.mustdo.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.life.software.mustdo.data.mapper.TaskMapper
 import com.life.software.mustdo.domain.TasksRepository
 import com.life.software.mustdo.domain.model.Task
@@ -36,8 +34,16 @@ class TaskRepositoryImpl @Inject constructor(
         taskDao.deleteTasks(listId)
     }
 
-    override suspend fun doneTasks(listId: List<Int>) {
-        taskDao.update(listId)
+    override suspend fun getSelectedTasks(listId: List<Int>):Flow<List<Task>> {
+       return (taskDao.getSelectedTasks(listId)).map { taskDb ->
+           taskDb.map {
+               TaskMapper.taskDbModelToTask(it)
+           }
+       }
+    }
+
+    override suspend fun doneTasks(tasksIdList: List<Int>) {
+        taskDao.tasksDone(tasksIdList)
     }
 
 }
