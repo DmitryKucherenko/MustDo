@@ -79,7 +79,7 @@ class AddTaskFragment : Fragment() {
             val task = Task(
                 0,
                 binding.editTextTextMultiLine.text.toString(),
-                getCurrentDateTime().toString()
+                System.currentTimeMillis()
             )
             viewModel.saveTask(task)
         }

@@ -8,6 +8,6 @@ class TaskDbModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val taskInfo: String,
-    val date: String,
+    val date: Long = System.currentTimeMillis(),
     val done: Boolean=false
 )
