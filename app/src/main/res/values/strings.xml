@@ -6,4 +6,5 @@
     <string name="dialog_item_text">Вы хотите удалить этот элемент(ы)?</string>
     <string name="positive_dialog_button">Да</string>
     <string name="negative_button_text">Нет</string>
+    <string name="search_hint">Введите запрос для поиска задачи</string>
 </resources>

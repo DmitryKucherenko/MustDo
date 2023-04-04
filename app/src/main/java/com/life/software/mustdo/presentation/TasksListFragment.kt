@@ -76,10 +76,10 @@ class TasksListFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getTaskList()
                     .catch { exceptions -> println(exceptions) }
-                    .collectLatest {  taskList ->
-             adapter.submitList(taskList)
-                        Log.d("TEST","LIST")
-                }
+                    .collectLatest { taskList ->
+                        adapter.submitList(taskList)
+                        Log.d("TEST", "LIST")
+                    }
             }
         }
 
@@ -93,10 +93,12 @@ class TasksListFragment : Fragment() {
     }
 
     private fun showDeleteMenu(show: Boolean) {
-
         for (itemIndex in 0 until mainMenu.size()) {
-            if(itemIndex == 1 && adapter.itemSelectedList.size > 1)mainMenu.getItem(itemIndex).isVisible = false else
-            mainMenu.getItem(itemIndex).isVisible = show
+            if (itemIndex == 1 && adapter.itemSelectedList.size > 1) {
+                mainMenu.getItem(itemIndex).isVisible = false
+            } else {
+                mainMenu.getItem(itemIndex).isVisible = show
+            }
         }
     }
 
@@ -117,11 +119,16 @@ class TasksListFragment : Fragment() {
 
                 }
             }
-            R.id.edite ->{
-                navController?.navigate(TasksListFragmentDirections.actionTasksListFragmentToAddTaskFragment(adapter.itemSelectedList.get(0)?:-1))
+            R.id.edite -> {
+                navController?.navigate(
+                    TasksListFragmentDirections.actionTasksListFragmentToAddTaskFragment(
+                        adapter.itemSelectedList[0]
+                    )
+                )
             }
-            R.id.done ->{
-                    viewModel.doneTasks(adapter.itemSelectedList)
+            R.id.done -> {
+                viewModel.doneTasks(adapter.itemSelectedList)
+                adapter.clearSelectedItem()
             }
 
         }

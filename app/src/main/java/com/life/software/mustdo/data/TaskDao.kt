@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM taskdbmodel")
+    @Query("SELECT * FROM taskdbmodel ORDER BY date")
     fun getTasks(): Flow<List<TaskDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
