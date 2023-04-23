@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.life.software.mustdo.domain.model.Task
 import com.life.software.mustdo.domain.useCase.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,11 +15,12 @@ class TasksListViewModel @Inject constructor(
     private val doneTasksUseCase: DoneTasksUseCase
 ) : ViewModel() {
 
-    var date = getTasksUseCase()
+    val getTaskList: Flow<List<Task>> = getTasksUseCase().shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        replay = 1
+    )
 
-    fun getTaskList(): Flow<List<Task>> {
-        return getTasksUseCase()
-    }
 
     fun deleteTasks(IdList: List<Int>) {
         viewModelScope.launch {

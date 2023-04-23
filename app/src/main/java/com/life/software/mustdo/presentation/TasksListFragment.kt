@@ -73,8 +73,8 @@ class TasksListFragment : Fragment() {
         initView()
         setupListener()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getTaskList()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.getTaskList
                     .catch { exceptions -> println(exceptions) }
                     .collectLatest { taskList ->
                         adapter.submitList(taskList)
