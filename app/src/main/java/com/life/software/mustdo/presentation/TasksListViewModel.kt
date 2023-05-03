@@ -10,17 +10,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TasksListViewModel @Inject constructor(
-    private val getTasksUseCase: GetTaskListUseCase,
     private val deleteTasksUseCase: DeleteTasksUseCase,
-    private val doneTasksUseCase: DoneTasksUseCase
+    private val doneTasksUseCase: DoneTasksUseCase,
+    private val searchTaskUseCase: SearchTaskUseCase
 ) : ViewModel() {
 
-    val getTaskList: Flow<List<Task>> = getTasksUseCase().shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        replay = 1
-    )
+    private val currentTaskList = mutableListOf<Task>()
 
+    private val _searchText = MutableStateFlow<String>("%%")
+    val searchText = _searchText.asStateFlow().debounce(600)
 
     fun deleteTasks(IdList: List<Int>) {
         viewModelScope.launch {
@@ -33,5 +31,20 @@ class TasksListViewModel @Inject constructor(
             doneTasksUseCase(tasksIdList)
         }
     }
+
+    fun searchTask(text: String) {
+        _searchText.value = "%$text%"
+    }
+
+
+
+    val getTaskList = searchText.flatMapLatest {
+        searchTaskUseCase(it)
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = currentTaskList
+        )
 
 }

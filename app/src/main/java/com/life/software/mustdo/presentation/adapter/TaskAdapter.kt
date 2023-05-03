@@ -1,5 +1,6 @@
 package com.life.software.mustdo.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +66,12 @@ class TaskAdapter(
 
     override fun getItemCount() = currentList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun clearSelectedItem(){
         _itemSelectedList.clear()
+        showMenuDelete(false)
+        isEnable = false
+        notifyDataSetChanged()
     }
+
 }

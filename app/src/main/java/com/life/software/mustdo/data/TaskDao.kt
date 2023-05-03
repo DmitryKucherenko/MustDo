@@ -1,9 +1,6 @@
 package com.life.software.mustdo.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.life.software.mustdo.data.model.TaskDbModel
 import com.life.software.mustdo.domain.model.Task
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +13,6 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTask(task: TaskDbModel)
 
-    @Query("DELETE FROM taskdbmodel WHERE id=:taskId")
-    suspend fun deleteTask(taskId: Int)
 
     @Query("DELETE FROM taskdbmodel WHERE id in (:taskList)")
     suspend fun deleteTasks(taskList:List<Int>)
@@ -32,5 +27,8 @@ interface TaskDao {
 
     @Query("UPDATE taskdbmodel SET done = (NOT done) WHERE id in(:taskIdList)")
     fun tasksDone(taskIdList:List<Int>)
+
+    @Query("SELECT * FROM taskdbmodel WHERE taskInfo LIKE :searchQuery")
+    fun search(searchQuery: String): Flow<List<TaskDbModel>>
 
 }

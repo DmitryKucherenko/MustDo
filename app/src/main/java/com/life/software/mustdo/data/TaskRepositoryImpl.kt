@@ -26,24 +26,23 @@ class TaskRepositoryImpl @Inject constructor(
         return taskDao.getTask(id)
     }
 
-    override suspend fun deleteTask(id: Int) {
-        taskDao.deleteTask(id)
-    }
 
     override suspend fun deleteTasks(listId: List<Int>) {
         taskDao.deleteTasks(listId)
     }
 
-    override suspend fun getSelectedTasks(listId: List<Int>):Flow<List<Task>> {
-       return (taskDao.getSelectedTasks(listId)).map { taskDb ->
-           taskDb.map {
-               TaskMapper.taskDbModelToTask(it)
-           }
-       }
-    }
 
     override suspend fun doneTasks(tasksIdList: List<Int>) {
         taskDao.tasksDone(tasksIdList)
     }
+
+    override  fun searchTasks(searchQuery: String): Flow<List<Task>> {
+        return taskDao.search(searchQuery).map { taskDb ->
+            taskDb.map {
+                TaskMapper.taskDbModelToTask(it)
+            }
+        }
+    }
+
 
 }

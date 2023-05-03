@@ -1,10 +1,11 @@
 package com.life.software.mustdo.presentation
 
-import android.content.ClipData
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -17,21 +18,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.life.software.mustdo.R
 import com.life.software.mustdo.databinding.TasksListFragmentBinding
-import com.life.software.mustdo.domain.model.Task
 import com.life.software.mustdo.presentation.adapter.TaskAdapter
 import com.life.software.mustdo.utils.Constants.UNDEFINED_ID
 import com.life.software.mustdo.utils.getDialog
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.system.exitProcess
 
 class TasksListFragment : Fragment() {
     private var _binding: TasksListFragmentBinding? = null
     private val binding get() = requireNotNull(_binding)
     private var navController: NavController? = null
+    private var searchView: EditText? = null
     private lateinit var mainMenu: Menu
+
 
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[TasksListViewModel::class.java]
@@ -54,10 +55,30 @@ class TasksListFragment : Fragment() {
         super.onAttach(context)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (adapter.itemSelectedList.isNotEmpty()) {
+                    adapter.clearSelectedItem()
+
+                    val currentList =  adapter.currentList.toList()
+                    adapter.submitList(currentList)
+                } else
+                    getDialog(
+                        requireContext(),
+                        getString(R.string.quit_text),
+                        getString(R.string.positive_dialog_button),
+                        getString(R.string.negative_button_text)
+                    ) {
+                        exitProcess(0)
+                    }.show()
+            }
+        })
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,15 +96,14 @@ class TasksListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.getTaskList
-                    .catch { exceptions -> println(exceptions) }
                     .collectLatest { taskList ->
                         adapter.submitList(taskList)
-                        Log.d("TEST", "LIST")
                     }
             }
         }
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         mainMenu = menu
@@ -139,11 +159,13 @@ class TasksListFragment : Fragment() {
         with(binding) {
             taskRecyclerView = recyclerView
             addTaskButton = floatingAddButton
+            searchView = searchText
         }
         taskRecyclerView?.layoutManager = LinearLayoutManager(context)
         adapter = TaskAdapter { show -> showDeleteMenu(show) }
         taskRecyclerView?.adapter = adapter
         navController = findNavController()
+
     }
 
     private fun setupListener() {
@@ -151,6 +173,9 @@ class TasksListFragment : Fragment() {
             navController?.navigate(
                 TasksListFragmentDirections.actionTasksListFragmentToAddTaskFragment(UNDEFINED_ID)
             )
+        }
+        searchView?.addTextChangedListener {
+            viewModel.searchTask(searchView?.text.toString())
         }
     }
 
