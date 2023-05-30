@@ -62,7 +62,22 @@ class AddTaskFragment : Fragment() {
             if (it) navController?.popBackStack()
         }
 
-            binding.editTextTextMultiLine.showKeyboard()
+        binding.editTextTextMultiLine.showKeyboard()
+        binding.switch1.setOnCheckedChangeListener { buttonView, isChecked ->
+            val visibility = if (isChecked) {
+                View.VISIBLE
+            } else (View.GONE)
+
+            with(binding) {
+                dateView.visibility = visibility
+                timeView.visibility = visibility
+                timeButton.visibility = visibility
+                dateButton.visibility = visibility
+                saveButton.visibility = visibility
+            }
+
+
+        }
 
 
         if (taskId == -1) {

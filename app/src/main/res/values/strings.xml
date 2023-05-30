@@ -8,4 +8,5 @@
     <string name="negative_button_text">Нет</string>
     <string name="search_hint">Введите запрос для поиска задачи</string>
     <string name="quit_text">Вы хотите выйти из приложения?</string>
+    <string name="remember_text">Напомнить</string>
 </resources>
