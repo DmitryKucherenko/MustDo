@@ -1,26 +1,33 @@
 package com.life.software.mustdo.presentation
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.life.software.mustdo.data.model.SettingsModel
 import com.life.software.mustdo.databinding.AddTaskFragmentBinding
 import com.life.software.mustdo.domain.model.Task
-import com.life.software.mustdo.utils.Constants.UNDEFINED_ID
-import com.life.software.mustdo.utils.getCurrentDateTime
+import com.life.software.mustdo.domain.useCase.ReadSettingsUseCase
+import com.life.software.mustdo.domain.useCase.WriteSettingsUseCase
 import com.life.software.mustdo.utils.showKeyboard
+import java.util.Calendar
 import javax.inject.Inject
 
 class AddTaskFragment : Fragment() {
     private var _binding: AddTaskFragmentBinding? = null
     private val binding get() = requireNotNull(_binding)
+
+    private val currentDate = Calendar.getInstance()
+    val alarmDate = Calendar.getInstance()
 
     private val args by navArgs<AddTaskFragmentArgs>()
     private val taskId by lazy { args.taskId }
@@ -31,6 +38,13 @@ class AddTaskFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var readSettingsUseCase: ReadSettingsUseCase
+
+    @Inject
+    lateinit var writeSettingsUseCase: WriteSettingsUseCase
+
 
     private var navController: NavController? = null
 
@@ -54,29 +68,72 @@ class AddTaskFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         navController = findNavController()
+
         viewModel.finish.observe(viewLifecycleOwner) {
             if (it) navController?.popBackStack()
         }
 
-        binding.editTextTextMultiLine.showKeyboard()
-        binding.switch1.setOnCheckedChangeListener { buttonView, isChecked ->
-            val visibility = if (isChecked) {
-                View.VISIBLE
-            } else (View.GONE)
+        with(binding) {
+            editTextTextMultiLine.showKeyboard()
+            dateView.text = String.format(
+                "%02d.%02d.%02d",
+                currentDate.get(Calendar.DAY_OF_MONTH),
+                Calendar.MONTH,
+                Calendar.YEAR
+            )
+            timeView.text = String.format(
+                "%02d:%02d",
+                currentDate.get(Calendar.HOUR_OF_DAY),
+                currentDate.get(Calendar.MINUTE)
+            )
+            reminderSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(readSettingsUseCase().firstRun){
+                    writeSettingsUseCase(SettingsModel(firstRun = false))
+                    navController?.navigate(
+                        AddTaskFragmentDirections.actionAddTaskFragmentToSettingsFragment()
+                    )
+                }
+                val visibility = if (isChecked) {
+                    View.VISIBLE
+                } else (View.GONE)
 
-            with(binding) {
                 dateView.visibility = visibility
                 timeView.visibility = visibility
                 timeButton.visibility = visibility
                 dateButton.visibility = visibility
-                saveButton.visibility = visibility
             }
+        }
 
-
+        binding.timeButton.setOnClickListener {
+            TimePickerDialog(
+                requireContext(),
+                { _, hour, minute ->
+                    alarmDate.set(Calendar.HOUR_OF_DAY, hour)
+                    alarmDate.set(Calendar.MINUTE, minute)
+                    binding.timeView.text = String.format("%02d:%02d", hour, minute)
+                },
+                currentDate.get(Calendar.HOUR_OF_DAY),
+                currentDate.get(Calendar.MINUTE),
+                true
+            ).show()
+        }
+        binding.dateButton.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                { _, year, month, dayOfMonth ->
+                    binding.dateView.text = String.format("%02d.%02d.%02d", dayOfMonth, month, year)
+                },
+                currentDate.get(Calendar.YEAR),
+                currentDate.get(Calendar.MONTH),
+                currentDate.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
 
 
@@ -90,11 +147,14 @@ class AddTaskFragment : Fragment() {
 
 
     private fun launchAddMode() {
+
         binding.saveButton.setOnClickListener {
+            Log.d("SWITCH", "${binding.reminderSwitch.isChecked}")
             val task = Task(
-                0,
-                binding.editTextTextMultiLine.text.toString(),
-                System.currentTimeMillis()
+                taskInfo = binding.editTextTextMultiLine.text.toString(),
+                addDate = System.currentTimeMillis(),
+                alarmDate = alarmDate.timeInMillis,
+                alarmActive = binding.reminderSwitch.isChecked
             )
             viewModel.saveTask(task)
         }
@@ -103,12 +163,19 @@ class AddTaskFragment : Fragment() {
     private fun launchEditMode() {
         viewModel.getTask(taskId)
 
-        viewModel.task.observe(viewLifecycleOwner, {
-            binding.editTextTextMultiLine.setText(it.taskInfo)
+
+        viewModel.task.observe(viewLifecycleOwner, { task ->
+            binding.editTextTextMultiLine.setText(task.taskInfo)
+            currentDate.timeInMillis = task.alarmDate
+            binding.reminderSwitch.isChecked = task.alarmActive
         })
+
+
+
         binding.saveButton.setOnClickListener {
             val taskEdit = viewModel.task.value?.copy(
                 taskInfo = binding.editTextTextMultiLine.text.toString(),
+                alarmActive = binding.reminderSwitch.isChecked
             )
             taskEdit?.let {
                 viewModel.saveTask(taskEdit)

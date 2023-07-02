@@ -1,5 +1,9 @@
 package com.life.software.mustdo.presentation
 
+
+import android.app.Application
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,11 +11,13 @@ import androidx.lifecycle.viewModelScope
 import com.life.software.mustdo.domain.model.Task
 import com.life.software.mustdo.domain.useCase.AddTaskUseCase
 import com.life.software.mustdo.domain.useCase.GetTaskUseCase
+import com.life.software.mustdo.utils.RemindersManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AddTaskViewModel @Inject constructor(
+    private val application: Application,
     private val addTaskUseCase: AddTaskUseCase,
     private val getTaskUseCase: GetTaskUseCase
 ): ViewModel() {
@@ -23,9 +29,14 @@ class AddTaskViewModel @Inject constructor(
     val task: LiveData<Task>
         get() = _task
 
+
     fun saveTask(task: Task) {
+        Log.d("saveTask","saveTask: $task")
         viewModelScope.launch(Dispatchers.IO) {
-            addTaskUseCase(task)
+            val id = addTaskUseCase(task)
+            if(task.alarmActive){
+                RemindersManager.startReminder(application, task.copy(id = id.toInt()))
+            }
             _finish.postValue(true)
         }
     }

@@ -4,10 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "taskdbmodel")
-class TaskDbModel(
+data class TaskDbModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val taskInfo: String,
-    val date: Long = System.currentTimeMillis(),
+    val addDate: Long = System.currentTimeMillis(),
+    val alarmDate: Long = 0,
+    val alarmActive:Boolean = false,
     val done: Boolean=false
 )

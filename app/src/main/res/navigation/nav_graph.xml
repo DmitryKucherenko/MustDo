@@ -21,5 +21,13 @@
         <argument
             android:name="taskId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_addTaskFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.life.software.mustdo.presentation.SettingsFragment"
+        android:label="SettingsFragment" />
+
 </navigation>

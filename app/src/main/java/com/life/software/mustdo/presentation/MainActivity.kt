@@ -1,10 +1,9 @@
 package com.life.software.mustdo.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.life.software.mustdo.R
+import com.life.software.mustdo.utils.createNotificationsChannels
 
 
 class MainActivity : AppCompatActivity() {
@@ -12,4 +11,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+
 }

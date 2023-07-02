@@ -9,7 +9,9 @@ class TaskMapper {
             Task(
                 taskDbModel.id,
                 taskDbModel.taskInfo,
-                taskDbModel.date,
+                taskDbModel.addDate,
+                taskDbModel.alarmDate,
+                taskDbModel.alarmActive,
                 taskDbModel.done
             )
 
@@ -24,7 +26,9 @@ class TaskMapper {
             return TaskDbModel(
                 task.id,
                 task.taskInfo,
-                task.date,
+                task.addDate,
+                task.alarmDate,
+                task.alarmActive,
                 task.done
             )
 
