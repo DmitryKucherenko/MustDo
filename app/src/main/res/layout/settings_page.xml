@@ -7,27 +7,65 @@
 
     <TextView
         android:id="@+id/textWarning"
-        android:layout_width="365dp"
-        android:layout_height="121dp"
-        android:layout_marginTop="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="48dp"
         android:lineSpacingExtra="8sp"
         android:text="@string/_1_2"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/settingsBtn"
+        android:id="@+id/setting_autostart"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/settings_button"
+        android:layout_height="54dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/settings_autostart_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textWarning" />
+
+    <Button
+        android:id="@+id/setting_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="57dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/settings_notification_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_autostart" />
+
+    <ImageView
+        android:id="@+id/check_autostart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintStart_toEndOf="@+id/setting_autostart"
+        app:layout_constraintTop_toBottomOf="@+id/textWarning"
+        app:srcCompat="@drawable/ic_select_check_box" />
+
+    <ImageView
+        android:id="@+id/check_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="92dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/setting_notification"
+        app:layout_constraintTop_toBottomOf="@+id/textWarning"
+        app:srcCompat="@drawable/ic_select_check_box" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

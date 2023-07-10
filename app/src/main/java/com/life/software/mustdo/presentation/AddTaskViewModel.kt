@@ -19,7 +19,8 @@ import javax.inject.Inject
 class AddTaskViewModel @Inject constructor(
     private val application: Application,
     private val addTaskUseCase: AddTaskUseCase,
-    private val getTaskUseCase: GetTaskUseCase
+    private val getTaskUseCase: GetTaskUseCase,
+    private val remindersManager: RemindersManager
 ): ViewModel() {
     private var _finish = MutableLiveData<Boolean>(false)
     val finish: LiveData<Boolean>
@@ -35,7 +36,7 @@ class AddTaskViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val id = addTaskUseCase(task)
             if(task.alarmActive){
-                RemindersManager.startReminder(application, task.copy(id = id.toInt()))
+                remindersManager.startReminder(application, task.copy(id = id.toInt()))
             }
             _finish.postValue(true)
         }

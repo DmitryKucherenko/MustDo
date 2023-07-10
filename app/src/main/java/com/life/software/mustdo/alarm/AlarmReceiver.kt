@@ -33,9 +33,6 @@ class AlarmReceiver : BroadcastReceiver() {
     @Inject
     lateinit var alarmOff: AlarmOffUseCase
 
-    /**
-     * sends notification when receives alarm
-     * */
     override fun onReceive(context: Context, intent: Intent) {
         (context.applicationContext as TaskApp).component.inject(this)
         val notificationManager = ContextCompat.getSystemService(
@@ -53,8 +50,6 @@ class AlarmReceiver : BroadcastReceiver() {
                 channelId = context.getString(R.string.reminders_notification_channel_id),
                 task
             )
-            // Remove this line if you don't want to reschedule the reminder
-            //RemindersManager.startReminder(context.applicationContext, task)
         }
     }
 }
@@ -67,7 +62,7 @@ fun NotificationManager.sendReminderNotification(
     contentIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
     val pendingIntent = PendingIntent.getActivity(
         applicationContext,
-        1,
+        task?.hashCode()?:0,
         contentIntent,
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )

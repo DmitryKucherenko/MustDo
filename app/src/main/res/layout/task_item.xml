@@ -22,12 +22,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
 
+            android:layout_marginTop="16dp"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskDate"
+            app:layout_constraintTop_toBottomOf="@+id/alarmDate"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="Task text" />
 
         <ImageView
@@ -41,24 +43,24 @@
             app:srcCompat="@drawable/ic_select_check_box" />
 
         <TextView
-            android:id="@+id/taskDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="no date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/alarmDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="alarm time"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/taskDate"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

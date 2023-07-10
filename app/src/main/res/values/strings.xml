@@ -13,6 +13,7 @@
     <string name="title_notification_reminder">Напоминание</string>
     <string name="description_notification_reminder">Напоминание о запланированной задаче</string>
     <string name="reminders_notification_channel_name">REMAINDER_CHANNEL_NAME</string>
-    <string name="settings_button">Настройки</string>
-    <string name="_1_2">Для корректной работы отображения уведомлений по расписанию необходимо разрешние на автозапуск!</string>
+    <string name="settings_autostart_text">Разрешить автозапуск</string>
+    <string name="_1_2">Необходимо разрешение на: \n \n 1. автозапуск \n 2.показ уведомления на экране блокировки </string>
+    <string name="settings_notification_text">Разрешить уведомления</string>
 </resources>

@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.life.software.mustdo.R
 import com.life.software.mustdo.databinding.TasksListFragmentBinding
 import com.life.software.mustdo.presentation.adapter.TaskAdapter
-import com.life.software.mustdo.utils.Constants.UNDEFINED_ID
+import com.life.software.mustdo.utils.UNDEFINED_ID
 import com.life.software.mustdo.utils.getDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

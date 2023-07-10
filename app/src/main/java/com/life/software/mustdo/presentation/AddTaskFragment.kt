@@ -117,6 +117,7 @@ class AddTaskFragment : Fragment() {
                 { _, hour, minute ->
                     alarmDate.set(Calendar.HOUR_OF_DAY, hour)
                     alarmDate.set(Calendar.MINUTE, minute)
+                    alarmDate.set(Calendar.SECOND,0)
                     binding.timeView.text = String.format("%02d:%02d", hour, minute)
                 },
                 currentDate.get(Calendar.HOUR_OF_DAY),

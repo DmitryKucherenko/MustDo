@@ -17,17 +17,16 @@ class BootReceiver : BroadcastReceiver() {
     @Inject
     lateinit var getAlarmTasksUseCase: GetAlarmTasksUseCase
 
-    /*
-    * restart reminders alarms when user's device reboots
-    * */
-    override fun onReceive(context: Context, intent: Intent) {
+    @Inject
+    lateinit var remindersManager: RemindersManager
 
+    override fun onReceive(context: Context, intent: Intent) {
         (context.applicationContext as TaskApp).component.inject(this)
         if (intent.action == "android.intent.action.BOOT_COMPLETED") {
             CoroutineScope(Dispatchers.Main).launch {
                 getAlarmTasksUseCase().collect { taskList ->
                     for (task in taskList) {
-                        RemindersManager.startReminder(context, task)
+                        remindersManager.startReminder(context, task)
                     }
                 }
             }

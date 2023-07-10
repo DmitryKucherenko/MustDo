@@ -1,7 +1,9 @@
 package com.life.software.mustdo.presentation.adapter
 
 import android.graphics.Paint
+import android.opengl.Visibility
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.life.software.mustdo.databinding.TaskItemBinding
 import com.life.software.mustdo.domain.model.Task
@@ -12,22 +14,23 @@ class TaskHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private val taskText = binding.taskText
-     val checkImage = binding.checkImageView
-    private val taskDateText = binding.taskDate
+    val checkImage = binding.checkImageView
     private val alarmDateText = binding.alarmDate
+    private val alarmImage = binding.imageView
 
     fun bind(task: Task) {
-        Log.d("bindTask","$task")
-        taskText.text = task.taskInfo
         with(taskText) {
+            text = task.taskInfo
             paintFlags = if (task.done)
                 paintFlags or Paint.STRIKE_THRU_TEXT_FLAG else
                 paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
-        taskDateText.text = DateFormat.getDateTimeInstance().format(task.addDate)
-        alarmDateText.text = DateFormat.getDateTimeInstance().format(task.alarmDate)
-
-
+        val alarmVisibility = if (task.alarmActive) View.VISIBLE else View.GONE
+        with(alarmDateText) {
+            text = DateFormat.getDateTimeInstance().format(task.alarmDate)
+            visibility = alarmVisibility
+        }
+        alarmImage.visibility = alarmVisibility
     }
 
 }
