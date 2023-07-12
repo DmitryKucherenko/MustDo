@@ -12,3 +12,7 @@ Technologies used in the project:
 * viewBinding
 * Coroutines/Flows
 * Clean architecture, MVVM
+
+<img src="tasks_list.png" width="500">
+<img src="add_a_reminder_task.png" width="500">
+<img src="popup_notification.png" width="500">
